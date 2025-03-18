@@ -1,21 +1,27 @@
 import React from 'react';
-import useProducts from "../hooks/useProducts";
+import useProducts from '../hooks/useProducts';
 import { useCart } from '../context/CartContext';
 import ProductCard from '../components/ProductCard';
 
+
 interface Product {
   id: number;
-  name: string;
+  title: string;
   price: number;
+  description: string;
+  category: string;
+  image: string;
 }
 
 const ProductList: React.FC = () => {
-  const products: Product[] = useProducts();
+  const { products, isLoading, error } = useProducts();
   const { addToCart } = useCart();
 
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading products.</p>;
+
   return (
-    <div>
-      <h2>Product List</h2>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
       {products.map((product: Product) => (
         <ProductCard
           key={product.id}
@@ -28,4 +34,3 @@ const ProductList: React.FC = () => {
 };
 
 export default ProductList;
-

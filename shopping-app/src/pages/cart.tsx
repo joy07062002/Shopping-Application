@@ -1,23 +1,31 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
-import CartItem from '../components/CartItem';
 
 const Cart: React.FC = () => {
   const { cart, removeFromCart } = useCart();
 
-  const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
-
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-semibold">Cart</h2>
+      <h2 className="text-2xl font-bold mb-4">Cart</h2>
       {cart.length === 0 ? (
-        <p className="mt-2">Your cart is empty.</p>
+        <p>Your cart is empty.</p>
       ) : (
-        cart.map(item => (
-          <CartItem key={item.id} item={item} onRemove={removeFromCart} />
-        ))
+        <ul>
+          {cart.map((item) => (
+            <li key={item.id} className="mb-2">
+              <div className="flex justify-between items-center">
+                <span>{item.title} - ${item.price}</span>
+                <button 
+                  onClick={() => removeFromCart(item.id)} 
+                  className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                >
+                  Remove
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
       )}
-      <p className="mt-4 font-bold">Total Price: ${totalPrice.toFixed(2)}</p>
     </div>
   );
 };
