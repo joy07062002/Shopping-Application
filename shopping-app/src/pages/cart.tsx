@@ -8,16 +8,24 @@ const Cart: React.FC = () => {
   const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold">Cart</h2>
+    <div className="container mx-auto px-4 py-8">
+      <h2 className="text-3xl font-bold text-center mb-8">Your Cart</h2>
       {cart.length === 0 ? (
-        <p className="mt-2">Your cart is empty.</p>
+        <p className="text-center text-gray-600">Your cart is empty.</p>
       ) : (
-        cart.map(item => (
-          <CartItem key={item.id} item={item} onRemove={removeFromCart} />
-        ))
+        <div className="grid grid-cols-1 gap-6">
+          {cart.map((item) => (
+            <CartItem key={item.id} item={item} onRemove={removeFromCart} />
+          ))}
+        </div>
       )}
-      <p className="mt-4 font-bold">Total Price: ${totalPrice.toFixed(2)}</p>
+      {cart.length > 0 && (
+        <div className="mt-8 p-6 bg-gray-50 rounded-lg sticky bottom-0">
+          <p className="text-xl font-bold">
+            Total Price: <span className="text-blue-600">${totalPrice.toFixed(2)}</span>
+          </p>
+        </div>
+      )}
     </div>
   );
 };
