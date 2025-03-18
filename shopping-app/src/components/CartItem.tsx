@@ -1,7 +1,14 @@
 import React from 'react';
 
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  image: string;
+}
+
 interface CartItemProps {
-  item: any; // Replace 'any' with a proper product type as needed
+  item: Product;
   onRemove: (id: number) => void;
 }
 

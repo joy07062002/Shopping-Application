@@ -1,51 +1,33 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface Product {
   id: number;
   title: string;
   price: number;
+  image: string;
 }
-
-interface CartState {
-  cart: Product[];
-}
-
-type CartAction = 
-  | { type: 'ADD_TO_CART'; payload: Product }
-  | { type: 'REMOVE_FROM_CART'; payload: number };
 
 interface CartContextType {
   cart: Product[];
   addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
+  removeFromCart: (id: number) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const cartReducer = (state: CartState, action: CartAction): CartState => {
-  switch (action.type) {
-    case 'ADD_TO_CART':
-      return { ...state, cart: [...state.cart, action.payload] };
-    case 'REMOVE_FROM_CART':
-      return { ...state, cart: state.cart.filter(item => item.id !== action.payload) };
-    default:
-      return state;
-  }
-};
-
-export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [state, dispatch] = useReducer(cartReducer, { cart: [] });
+export const CartProvider = ({ children }: { children: ReactNode }) => {
+  const [cart, setCart] = useState<Product[]>([]);
 
   const addToCart = (product: Product) => {
-    dispatch({ type: 'ADD_TO_CART', payload: product });
+    setCart(prevCart => [...prevCart, product]);
   };
 
-  const removeFromCart = (productId: number) => {
-    dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
+  const removeFromCart = (id: number) => {
+    setCart(prevCart => prevCart.filter(product => product.id !== id));
   };
 
   return (
-    <CartContext.Provider value={{ cart: state.cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );
