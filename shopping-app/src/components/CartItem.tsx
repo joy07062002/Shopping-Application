@@ -13,6 +13,8 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ item, onRemove }) => {
+  const priceInr = (item.price * 83).toFixed(2); // Convert USD to INR
+
   return (
     <div className="flex items-center justify-between border-b py-4 bg-white bg-opacity-10 backdrop-blur-md rounded-lg p-4 hover:shadow-lg transition-shadow duration-300">
       <div className="flex items-center">
@@ -23,7 +25,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, onRemove }) => {
         />
         <div className="ml-4">
           <h4 className="text-lg font-semibold text-white">{item.title}</h4>
-          <p className="text-gray-200">${item.price.toFixed(2)}</p>
+          <p className="text-gray-200">₹{priceInr}</p> {/* Display price in INR */}
         </div>
       </div>
       <button
